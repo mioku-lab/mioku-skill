@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mioku Developer"
+  short_description: "Work on Mioku plugins, services, skills, and architecture"
+  default_prompt: "Use $mioku-developer to inspect this repository and build, review, or refactor a Mioku plugin, service, or framework integration."

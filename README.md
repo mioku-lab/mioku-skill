@@ -1,2 +1,9 @@
 # mioku-skill
-为Agent准备的开发技能
+
+Mioku 开发技能文件集合
+
+## 安装
+
+```bash
+npx skills add https://github.com/yourname/mioku-skill
+```
