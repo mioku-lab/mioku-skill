@@ -14,14 +14,12 @@ plugins/<name>/
   package.json
 ```
 
-Optional files used by current Mioku conventions:
+Optional files used by current Mioku conventions. Small plugins do not need all of them:
 
 ```text
 plugins/<name>/
   skills.ts
   runtime.ts
-  shared.ts
-  utils.ts
   config.md
 ```
 
@@ -114,6 +112,8 @@ These rules reflect the repository's current contract, not older patterns.
 - Do not define `help` or `skill` on the plugin object anymore.
 - Do not call `helpService.registerHelp(...)` from normal plugins.
 - Do not call `aiService.registerSkill(...)` from normal plugins.
+- Small plugins can stay in a single focused `index.ts`.
+- As complexity grows, split by responsibility into small modules instead of one oversized `index.ts` or one oversized shared helper file.
 
 ## `skills.ts`
 
@@ -145,12 +145,18 @@ Pattern:
 
 This avoids capturing setup-local variables from a file that Mioku imports independently.
 
+Important implementation note:
+
+- do not implement `runtime.ts` as a plain module-local singleton like `const runtimeState = {}`
+- Mioku/mioki may load plugin modules through separate import paths and `mioki` currently disables `jiti` module cache
+- prefer the shared runtime registry in `src/core/plugin-runtime-state.ts`
+
 ## `shared.ts` and `utils.ts`
 
-Use these files for pure reusable helpers.
+Use these files for pure reusable helpers. They are optional conventions, not mandatory filenames.
 
 - keep mutable process state in `runtime.ts`
-- keep pure rendering/parsing/business logic in `shared.ts` or `utils.ts`
+- keep pure rendering/parsing/business logic in `shared.ts`, `utils.ts`, or other focused helper modules
 
 ## Service Usage From Plugins
 
@@ -206,7 +212,7 @@ Useful `ctx` members from Mioku/mioki docs:
 - `ctx.segment`
 - `ctx.logger`
 - `ctx.cron(...)`
-- `ctx.pickBot(ctx.self_id)`
+- `ctx.pickBot(ctx.self_id)` **USE THIS INSTEAD OF ctx.bot**
 - `ctx.isOwner(event)`
 - `ctx.isAdmin(event)`
 

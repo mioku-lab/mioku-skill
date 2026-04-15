@@ -14,15 +14,6 @@ src/services/<name>/
   package.json
 ```
 
-Optional supporting files:
-
-```text
-src/services/<name>/
-  types.ts
-  utils.ts
-  README.md
-```
-
 The repository also contains service-specific extras in some built-in services; match existing local patterns.
 
 ## Naming
@@ -49,6 +40,7 @@ interface MiokuService {
 Implementation rules:
 
 - keep the exported `name` aligned with the directory name
+- small services can stay single-file, but larger services should split into focused modules
 - assign the public API to `service.api`
 - initialize resources in `init()`
 - clean up long-lived resources in optional `dispose()`
@@ -69,7 +61,8 @@ Plugin side:
 
 1. declare the service name in `package.json -> mioku.services`
 2. read the API from `ctx.services?.<name>`
-3. cast to the service API type when one exists
+3. if the service name is not a legal dot-notation identifier, use bracket access such as `ctx.services?.["60s"]`
+4. cast to the service API type when one exists
 
 Example:
 

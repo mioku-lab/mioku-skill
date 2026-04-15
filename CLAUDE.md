@@ -12,7 +12,7 @@ This skill is for repository-accurate Mioku development.
 - wiring plugin help through `package.json -> mioku.help`
 - wiring plugin service dependencies through `package.json -> mioku.services`
 - adding plugin WebUI config pages through `config.md`
-- working with built-in non-Minecraft services: `ai`, `config`, `help`, `screenshot`, `webui`
+- working with built-in non-Minecraft services:  `ai`, `config`, `help`, `screenshot`, `webui`
 
 Ignore legacy Minecraft plugin/service code unless the task explicitly targets it.
 
@@ -22,7 +22,10 @@ Ignore legacy Minecraft plugin/service code unless the task explicitly targets i
 - Do not fall back to older Mioku plugin patterns.
 - Keep plugin runtime behavior in `index.ts`.
 - Keep plugin AI tools in `skills.ts`.
+- Small plugins/services can stay in one focused file.
+- As complexity grows, split by responsibility into small files instead of growing one oversized `index.ts` or helper file.
 - Use `runtime.ts` only to bridge state created in `setup()` to `skills.ts`.
+- Do not use plain module-local runtime singletons; prefer `src/core/plugin-runtime-state.ts`.
 - Keep plugin help in `package.json -> mioku.help`.
 - Do not manually call `helpService.registerHelp(...)` or `aiService.registerSkill(...)` from normal plugins.
 
